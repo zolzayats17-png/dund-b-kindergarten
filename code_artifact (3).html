@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Нийслэлийн хүүхдийн 33 дугаар цэцэрлэг - Дунд Б Бүлэг</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for Playful Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&display=swap" rel="stylesheet">
+    <!-- Alpine.js for interactive state management -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 35%, #fef3c7 70%, #fae8ff 100%);
+            background-attachment: fixed;
+        }
+        
+        .font-heading {
+            font-family: 'Comfortaa', 'Nunito', cursive, sans-serif;
+        }
+
+        /* Playful Floating Animations */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+        .animate-float {
+            animation: floatSlow 4s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.03); }
+        }
+        .animate-glow {
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+
+        /* Custom colorful scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #3b82f6, #ec4899);
+            border-radius: 10px;
+        }
+        
+        /* Glassmorphism card effects */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        /* Custom checkbox and selects */
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body x-data="kindergartenApp()" class="text-slate-800 min-h-screen flex flex-col relative overflow-x-hidden">
+
+    <!-- Playful Colorful Top Banner -->
+    <header class="bg-gradient-to-r from-blue-700 via-indigo-600 to-purple-600 text-white shadow-2xl sticky top-0 z-40 border-b-4 border-amber-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap justify-between items-center gap-4">
+            
+            <!-- Kindergarten Title -->
+            <div class="flex items-center space-x-3.5">
+                <div>
+                    <h1 class="text-lg sm:text-2xl font-black font-heading tracking-tight flex flex-wrap items-center gap-2 text-white drop-shadow-md">
+                        <span>Нийслэлийн хүүхдийн 33 дугаар цэцэрлэг</span>
+                        <span class="text-xs bg-amber-400 text-slate-950 font-extrabold px-3 py-1 rounded-full uppercase shadow-md animate-pulse">
+                            🎨 Дунд "Б" бүлэг
+                        </span>
+                    </h1>
+                    <p class="text-xs sm:text-sm text-sky-100 font-bold flex items-center gap-2 mt-0.5">
+                        <span class="bg-blue-800/60 px-2.5 py-0.5 rounded-lg border border-blue-400/30">
+                            <i class="fa-solid fa-chalkboard-user text-amber-300 mr-1.5"></i> Бүлгийн багш: 
+                            <strong class="text-amber-200 font-black">Ц.Золзаяа</strong>
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Role Selector with Security Lock -->
+            <div class="flex items-center space-x-2 bg-white/10 backdrop-blur-md p-2 rounded-2xl border border-white/20 shadow-inner">
+                <span class="text-xs font-bold px-2 text-sky-100 hidden sm:inline">
+                    <i class="fa-solid fa-user-gear text-amber-300 mr-1"></i> Горим:
+                </span>
+                
+                <select :value="currentRole" @change="handleRoleChange($event.target.value)" class="bg-white text-slate-900 text-xs sm:text-sm font-extrabold py-2 px-3 rounded-xl shadow-md focus:outline-none focus:ring-2 focus:ring-amber-400 cursor-pointer border-2 border-amber-300">
+                    <option value="parent">👨‍👩‍👧 Эцэг эхийн горим (Үзэх, санал)</option>
+                    <option value="teacher">👩‍🏫 Багш Ц.Золзаяа</option>
+                    <option value="management">🏫 Анги удирдлага (Хяналт)</option>
+                </select>
+
+                <template x-if="currentRole === 'teacher'">
+                    <span class="bg-emerald-500 text-white text-xs font-extrabold px-2.5 py-1.5 rounded-xl flex items-center gap-1 shadow-md animate-bounce">
+                        <i class="fa-solid fa-lock-open"></i> Эх үүсвэр
+                    </span>
+                </template>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Interactive Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full flex flex-col md:flex-row gap-6 relative z-10">
+
+        <!-- Sidebar Colorful Navigation Menu -->
+        <aside class="w-full md:w-72 flex-shrink-0">
+            <div class="glass-card rounded-3xl p-5 shadow-xl border-2 border-white/80 sticky top-28 space-y-5">
+                
+                <!-- Kindergarten Banner Card -->
+                <div class="p-4 rounded-2xl bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 text-white shadow-lg space-y-2 relative overflow-hidden">
+                    <div class="absolute -right-3 -bottom-3 text-white/10 text-6xl">🎈</div>
+                    <p class="text-[11px] font-black uppercase tracking-widest text-amber-300">Чингэлтэй дүүрэг</p>
+                    <h2 class="font-black text-base leading-snug font-heading text-white">Нийслэлийн хүүхдийн 33 дугаар цэцэрлэг</h2>
+                    <div class="pt-1 flex items-center justify-between text-xs font-bold border-t border-white/20">
+                        <span>Бүлэг: <strong class="text-amber-300">Дунд Б</strong></span>
+                        <span>Багш: <strong class="text-amber-200">Ц.Золзаяа</strong></span>
+                    </div>
+                </div>
+
+                <!-- Main Navigation Tabs -->
+                <div>
+                    <p class="text-xs font-black text-indigo-900 uppercase tracking-wider px-3 mb-2 flex items-center gap-1">
+                        <span>🚀 Цэсүүд</span>
+                    </p>
+                    <nav class="space-y-2">
+                        <button @click="activeTab = 'children'" :class="activeTab === 'children' ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-extrabold shadow-lg scale-102' : 'text-slate-700 hover:bg-blue-50 font-bold'" class="w-full flex items-center justify-between px-4 py-3 rounded-2xl transition-all duration-200 text-left text-sm group">
+                            <span class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-xl bg-blue-100 group-hover:bg-blue-200 flex items-center justify-center text-blue-600 text-base shadow-sm">👦</span>
+                                <span>Хүүхдийн мэдээлэл</span>
+                            </span>
+                            <span :class="activeTab === 'children' ? 'bg-white text-blue-600' : 'bg-slate-100 text-slate-600'" class="text-xs px-2.5 py-1 rounded-full font-black shadow-sm" x-text="children.length"></span>
+                        </button>
+
+                        <button @click="activeTab = 'daily'" :class="activeTab === 'daily' ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-extrabold shadow-lg scale-102' : 'text-slate-700 hover:bg-emerald-50 font-bold'" class="w-full flex items-center justify-between px-4 py-3 rounded-2xl transition-all duration-200 text-left text-sm group">
+                            <span class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-xl bg-emerald-100 group-hover:bg-emerald-200 flex items-center justify-center text-emerald-600 text-base shadow-sm">🎨</span>
+                                <span>Өдөр тутмын ажиглалт</span>
+                            </span>
+                            <span :class="activeTab === 'daily' ? 'bg-white text-emerald-600' : 'bg-slate-100 text-slate-600'" class="text-xs px-2.5 py-1 rounded-full font-black shadow-sm" x-text="dailyLogs.length"></span>
+                        </button>
+
+                        <button @click="activeTab = 'interviews'" :class="activeTab === 'interviews' ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white font-extrabold shadow-lg scale-102' : 'text-slate-700 hover:bg-amber-50 font-bold'" class="w-full flex items-center justify-between px-4 py-3 rounded-2xl transition-all duration-200 text-left text-sm group">
+                            <span class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-xl bg-amber-100 group-hover:bg-amber-200 flex items-center justify-center text-amber-600 text-base shadow-sm">💬</span>
+                                <span>Ярилцлагын тэмдэглэл</span>
+                            </span>
+                            <span :class="activeTab === 'interviews' ? 'bg-white text-amber-600' : 'bg-slate-100 text-slate-600'" class="text-xs px-2.5 py-1 rounded-full font-black shadow-sm" x-text="interviewLogs.length"></span>
+                        </button>
+
+                        <button @click="activeTab = 'news'" :class="activeTab === 'news' ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-extrabold shadow-lg scale-102' : 'text-slate-700 hover:bg-purple-50 font-bold'" class="w-full flex items-center justify-between px-4 py-3 rounded-2xl transition-all duration-200 text-left text-sm group">
+                            <span class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-xl bg-purple-100 group-hover:bg-purple-200 flex items-center justify-center text-purple-600 text-base shadow-sm">📢</span>
+                                <span>Мэдээ мэдээлэл</span>
+                            </span>
+                            <span :class="activeTab === 'news' ? 'bg-white text-purple-600' : 'bg-slate-100 text-slate-600'" class="text-xs px-2.5 py-1 rounded-full font-black shadow-sm" x-text="newsFeed.length"></span>
+                        </button>
+
+                        <button @click="activeTab = 'feedback'" :class="activeTab === 'feedback' ? 'bg-gradient-to-r from-rose-500 to-pink-500 text-white font-extrabold shadow-lg scale-102' : 'text-slate-700 hover:bg-rose-50 font-bold'" class="w-full flex items-center justify-between px-4 py-3 rounded-2xl transition-all duration-200 text-left text-sm group">
+                            <span class="flex items-center gap-3">
+                                <span class="w-8 h-8 rounded-xl bg-rose-100 group-hover:bg-rose-200 flex items-center justify-center text-rose-600 text-base shadow-sm">💌</span>
+                                <span>Санал хүсэлт</span>
+                            </span>
+                            <span :class="activeTab === 'feedback' ? 'bg-white text-rose-600' : 'bg-slate-100 text-slate-600'" class="text-xs px-2.5 py-1 rounded-full font-black shadow-sm" x-text="feedbacks.length"></span>
+                        </button>
+
+                        <div class="pt-2 border-t border-slate-200/60">
+                            <button @click="activeTab = 'deploy_guide'" :class="activeTab === 'deploy_guide' ? 'bg-sky-600 text-white font-extrabold shadow-md' : 'text-slate-600 hover:bg-sky-50 font-bold'" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-2xl transition-all text-left text-xs">
+                                <i class="fa-solid fa-cloud-arrow-up text-sky-500 text-base"></i>
+                                <span>Supabase/Vercel Заавар</span>
+                            </button>
+                        </div>
+                    </nav>
+                </div>
+
+                <!-- Teacher Status Box -->
+                <div class="p-3.5 rounded-2xl bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-200 text-xs space-y-1.5 shadow-sm">
+                    <div class="flex items-center justify-between text-slate-600 font-bold">
+                        <span>Сонгосон горим:</span>
+                        <span class="inline-block w-3 h-3 rounded-full" :class="currentRole === 'teacher' ? 'bg-emerald-500 animate-ping' : 'bg-amber-500'"></span>
+                    </div>
+                    <p class="font-extrabold text-slate-900 text-sm" x-text="getRoleName(currentRole)"></p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 min-w-0">
+
+            <!-- Top Colorful Stats Dashboard Bar -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                <div class="glass-card p-4 rounded-3xl border-2 border-blue-200 shadow-md flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl bg-blue-500 text-white font-black text-2xl flex items-center justify-center shadow-lg">
+                        🧸
+                    </div>
+                    <div>
+                        <p class="text-xs font-black text-slate-500 uppercase">Нийт сурагч</p>
+                        <p class="text-xl font-black text-blue-700 font-heading" x-text="children.length + ' хүүхэд'"></p>
+                    </div>
+                </div>
+
+                <div class="glass-card p-4 rounded-3xl border-2 border-pink-200 shadow-md flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl bg-pink-500 text-white font-black text-2xl flex items-center justify-center shadow-lg">
+                        👧
+                    </div>
+                    <div>
+                        <p class="text-xs font-black text-slate-500 uppercase">Охид / Хөвгүүд</p>
+                        <p class="text-base font-black text-pink-600 font-heading" x-text="getGenderStats()"></p>
+                    </div>
+                </div>
+
+                <div class="glass-card p-4 rounded-3xl border-2 border-teal-200 shadow-md flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl bg-teal-500 text-white font-black text-2xl flex items-center justify-center shadow-lg">
+                        📚
+                    </div>
+                    <div>
+                        <p class="text-xs font-black text-slate-500 uppercase">Ажиглалт</p>
+                        <p class="text-xl font-black text-teal-700 font-heading" x-text="dailyLogs.length + ' бүртгэл'"></p>
+                    </div>
+                </div>
+
+                <div class="glass-card p-4 rounded-3xl border-2 border-rose-200 shadow-md flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-2xl bg-rose-500 text-white font-black text-2xl flex items-center justify-center shadow-lg">
+                        💌
+                    </div>
+                    <div>
+                        <p class="text-xs font-black text-slate-500 uppercase">Санал хүсэлт</p>
+                        <p class="text-xl font-black text-rose-600 font-heading" x-text="feedbacks.length + ' ирсэн'"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 1: CHILDREN PROFILES -->
+            <div x-show="activeTab === 'children'" x-transition class="space-y-6">
+                <div class="glass-card rounded-3xl p-6 shadow-lg border-2 border-blue-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h2 class="text-2xl font-black text-slate-800 font-heading flex items-center gap-3">
+                            <span class="text-3xl">👦👧</span>
+                            <span>Нийслэлийн хүүхдийн 33 дугаар цэцэрлэг - Дунд Б бүлэг</span>
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-600 font-bold mt-1">Хүүхдүүдийн хувийн мэдээлэл, регистрийн дугаар, эцэг эхийн холбоо барих болон онцлог тэмдэглэл.</p>
+                    </div>
+                    <template x-if="currentRole === 'teacher'">
+                        <button @click="openChildModal()" class="bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-black px-5 py-3 rounded-2xl shadow-xl hover:scale-105 transition transform text-sm flex items-center gap-2 cursor-pointer border-2 border-white">
+                            <i class="fa-solid fa-user-plus text-base"></i> Хүүхэд бүртгэх
+                        </button>
+                    </template>
+                </div>
+
+                <!-- Search & Gender Filter Bar -->
+                <div class="glass-card rounded-2xl p-4 shadow-md border border-white flex flex-col sm:flex-row gap-3">
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-blue-400 text-sm"></i>
+                        <input type="text" x-model="childSearch" placeholder="Хүүхдийн нэр, овог, регистр, эцэг эхийн утаснаас хайх..." class="w-full pl-11 pr-4 py-2.5 bg-white border-2 border-blue-100 rounded-xl text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-inner">
+                    </div>
+                    <select x-model="genderFilter" class="bg-white border-2 border-blue-100 rounded-xl px-4 py-2.5 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-sm cursor-pointer">
+                        <option value="all">🌈 Бүх хүйс</option>
+                        <option value="Эрэгтэй">👦 Эрэгтэй</option>
+                        <option value="Эмэгтэй">👧 Эмэгтэй</option>
+                    </select>
+                </div>
+
+                <!-- Children Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <template x-for="child in filteredChildren" :key="child.id">
+                        <div class="glass-card rounded-3xl p-5 shadow-lg border-2 hover:border-blue-400 transition-all duration-300 relative overflow-hidden flex flex-col justify-between group hover:-translate-y-1">
+                            <div class="flex items-start gap-4">
+                                <div class="relative">
+                                    <img :src="child.photo || 'https://placehold.co/150x150/e0f2fe/0369a1?text=' + encodeURIComponent(child.firstName[0])" class="w-20 h-20 rounded-2xl object-cover border-4 border-white shadow-md flex-shrink-0 group-hover:scale-105 transition">
+                                    <span class="absolute -bottom-2 -right-1 text-xl" x-text="child.gender === 'Эрэгтэй' ? '👦' : '👧'"></span>
+                                </div>
+                                
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between gap-2">
+                                        <h3 class="font-black text-slate-800 text-lg truncate font-heading" x-text="child.lastName + ' ' + child.firstName"></h3>
+                                        <span :class="child.gender === 'Эрэгтэй' ? 'bg-sky-100 text-sky-800 border-sky-300' : 'bg-rose-100 text-rose-800 border-rose-300'" class="text-xs px-3 py-1 rounded-full font-black border" x-text="child.gender"></span>
+                                    </div>
+                                    
+                                    <p class="text-xs text-slate-600 font-bold mt-1">
+                                        Нас: <span class="text-blue-700 font-black" x-text="child.age + ' настай'"></span> | 
+                                        РД: <span class="font-mono bg-amber-100 px-1.5 py-0.5 rounded text-amber-900 font-black" x-text="child.regNumber"></span>
+                                    </p>
+                                    
+                                    <!-- Parent Contact Card -->
+                                    <div class="mt-3 bg-gradient-to-r from-blue-50 to-indigo-50 p-3 rounded-2xl border border-blue-200/60 text-xs space-y-1">
+                                        <div class="flex items-center justify-between text-slate-700 font-bold">
+                                            <span class="flex items-center gap-1.5 text-indigo-900">
+                                                <i class="fa-solid fa-user-group text-indigo-500"></i>
+                                                <span x-text="child.parentName"></span>
+                                            </span>
+                                            <a :href="'tel:' + child.parentPhone" class="bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1 rounded-lg font-black shadow-sm flex items-center gap-1 transition">
+                                                <i class="fa-solid fa-phone text-xs"></i>
+                                                <span x-text="child.parentPhone"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 pt-3 border-t border-slate-200/60 flex items-center justify-between text-xs font-bold text-slate-600">
+                                <p class="truncate flex items-center gap-1.5">
+                                    <span class="text-amber-500">📌</span>
+                                    <span x-text="'Онцлог: ' + (child.note || 'Тусгай анхааруулга байхгүй')"></span>
+                                </p>
+                                
+                                <template x-if="currentRole === 'teacher'">
+                                    <div class="flex items-center space-x-2">
+                                        <button @click="openChildModal(child)" class="bg-amber-100 hover:bg-amber-200 text-amber-800 p-2 rounded-xl transition shadow-sm" title="Засах">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
+                                        <button @click="confirmDeleteChild(child)" class="bg-rose-100 hover:bg-rose-200 text-rose-700 p-2 rounded-xl transition shadow-sm" title="Устгах">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- TAB 2: DAILY OBSERVATIONS -->
+            <div x-show="activeTab === 'daily'" x-transition class="space-y-6">
+                <div class="glass-card rounded-3xl p-6 shadow-lg border-2 border-emerald-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h2 class="text-2xl font-black text-slate-800 font-heading flex items-center gap-3">
+                            <span class="text-3xl">🎨</span>
+                            <span>Өдөр тутмын ажиглалтын тэмдэглэл</span>
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-600 font-bold mt-1">Багш Ц.Золзаяагийн сурагчдын идэвх оролцоо, хичээлийн явцын тэмдэглэл ба медиа хавсралт.</p>
+                    </div>
+                    <template x-if="currentRole === 'teacher'">
+                        <button @click="openDailyModal()" class="bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white font-black px-5 py-3 rounded-2xl shadow-xl hover:scale-105 transition transform text-sm flex items-center gap-2 cursor-pointer border-2 border-white">
+                            <i class="fa-solid fa-plus"></i> Ажиглалт нэмэх
+                        </button>
+                    </template>
+                </div>
+
+                <div class="space-y-5">
+                    <template x-for="log in dailyLogs" :key="log.id">
+                        <div class="glass-card rounded-3xl p-6 shadow-lg border-2 border-emerald-100 space-y-4 hover:border-emerald-300 transition">
+                            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200/60 pb-3">
+                                <div>
+                                    <span class="text-xs font-black text-emerald-800 bg-emerald-100 border border-emerald-300 px-3 py-1 rounded-full" x-text="'🗓 ' + log.date"></span>
+                                    <h3 class="text-xl font-black text-slate-800 font-heading mt-2" x-text="log.subject"></h3>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs bg-indigo-100 text-indigo-900 font-black px-3 py-1.5 rounded-xl border border-indigo-200" x-text="'👤 ' + getChildNameById(log.childId)"></span>
+                                    <template x-if="currentRole === 'teacher'">
+                                        <button @click="deleteDailyLog(log.id)" class="bg-rose-100 hover:bg-rose-200 text-rose-700 p-2 rounded-xl transition">
+                                            <i class="fa-solid fa-trash-can text-sm"></i>
+                                        </button>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <p class="text-sm sm:text-base text-slate-800 leading-relaxed font-semibold bg-white/60 p-4 rounded-2xl border border-slate-100" x-text="log.content"></p>
+
+                            <!-- Attachment Media Cards -->
+                            <template x-if="log.attachments && log.attachments.length > 0">
+                                <div class="pt-2">
+                                    <p class="text-xs font-black text-emerald-900 uppercase tracking-wider mb-2 flex items-center gap-1">
+                                        <span>📷 Хавсаргасан Зураг / Бичлэг:</span>
+                                    </p>
+                                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                        <template x-for="file in log.attachments" :key="file.url">
+                                            <div class="relative group rounded-2xl overflow-hidden border-2 border-white shadow-md bg-slate-900 aspect-video cursor-pointer" @click="previewMedia(file)">
+                                                <template x-if="file.type === 'image'">
+                                                    <img :src="file.url" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                                                </template>
+                                                <template x-if="file.type === 'video'">
+                                                    <div class="w-full h-full flex flex-col items-center justify-center bg-slate-800 text-white p-2">
+                                                        <i class="fa-solid fa-circle-play text-4xl text-emerald-400 mb-1 group-hover:scale-110 transition"></i>
+                                                        <span class="text-xs font-black" x-text="file.name || 'Видео тоглуулах'"></span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- TAB 3: INTERVIEW LOGS -->
+            <div x-show="activeTab === 'interviews'" x-transition class="space-y-6">
+                <div class="glass-card rounded-3xl p-6 shadow-lg border-2 border-amber-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h2 class="text-2xl font-black text-slate-800 font-heading flex items-center gap-3">
+                            <span class="text-3xl">💬</span>
+                            <span>Ярилцлагын тэмдэглэл</span>
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-600 font-bold mt-1">Багш Ц.Золзаяагийн эцэг эх болон хүүхдүүдтэй хийсэн ганцаарчилсан ярилцлагын тэмдэглэл, зураг, бичлэгийн хавсралт.</p>
+                    </div>
+                    <template x-if="currentRole === 'teacher'">
+                        <button @click="openInterviewModal()" class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-black px-5 py-3 rounded-2xl shadow-xl hover:scale-105 transition transform text-sm flex items-center gap-2 cursor-pointer border-2 border-white">
+                            <i class="fa-solid fa-plus"></i> Ярилцлага нэмэх
+                        </button>
+                    </template>
+                </div>
+
+                <div class="space-y-4">
+                    <template x-for="interview in interviewLogs" :key="interview.id">
+                        <div class="glass-card rounded-3xl p-6 shadow-lg border-2 border-amber-100 space-y-4">
+                            <div class="flex items-center justify-between border-b border-slate-200/60 pb-3">
+                                <div>
+                                    <span class="text-xs font-black text-amber-900 bg-amber-100 border border-amber-300 px-3 py-1 rounded-full" x-text="'🗓 ' + interview.date"></span>
+                                    <h3 class="text-lg font-black text-slate-800 font-heading mt-2" x-text="'❓ Сэдэв / Асуулт: ' + interview.question"></h3>
+                                </div>
+                                <template x-if="currentRole === 'teacher'">
+                                    <button @click="deleteInterview(interview.id)" class="bg-rose-100 hover:bg-rose-200 text-rose-700 p-2 rounded-xl transition">
+                                        <i class="fa-solid fa-trash-can text-sm"></i>
+                                    </button>
+                                </template>
+                            </div>
+
+                            <div class="bg-amber-50/80 p-4 rounded-2xl border border-amber-200">
+                                <p class="text-xs font-black text-amber-900 uppercase tracking-wider mb-1">Ярилцлагын агуулга & Дүгнэлт:</p>
+                                <p class="text-sm sm:text-base text-slate-800 font-bold leading-relaxed" x-text="interview.response"></p>
+                            </div>
+
+                            <!-- Attachment Media Cards for Interviews -->
+                            <template x-if="interview.attachments && interview.attachments.length > 0">
+                                <div class="pt-2">
+                                    <p class="text-xs font-black text-amber-900 uppercase tracking-wider mb-2 flex items-center gap-1">
+                                        <span>📷 Хавсаргасан Зураг / Бичлэг:</span>
+                                    </p>
+                                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                        <template x-for="file in interview.attachments" :key="file.url">
+                                            <div class="relative group rounded-2xl overflow-hidden border-2 border-white shadow-md bg-slate-900 aspect-video cursor-pointer" @click="previewMedia(file)">
+                                                <template x-if="file.type === 'image'">
+                                                    <img :src="file.url" class="w-full h-full object-cover group-hover:scale-110 transition duration-300">
+                                                </template>
+                                                <template x-if="file.type === 'video'">
+                                                    <div class="w-full h-full flex flex-col items-center justify-center bg-slate-800 text-white p-2">
+                                                        <i class="fa-solid fa-circle-play text-4xl text-amber-400 mb-1 group-hover:scale-110 transition"></i>
+                                                        <span class="text-xs font-black" x-text="file.name || 'Видео тоглуулах'"></span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- TAB 5: FEEDBACK -->
+            <div x-show="activeTab === 'feedback'" x-transition class="space-y-6">
+                <div class="glass-card rounded-3xl p-6 shadow-lg border-2 border-rose-200">
+                    <h2 class="text-2xl font-black text-slate-800 font-heading flex items-center gap-3">
+                        <span class="text-3xl">💌</span>
+                        <span>Эцэг эхийн санал хүсэлт</span>
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-600 font-bold mt-1">Багш Ц.Золзаяа болон 33-р цэцэрлэгийн удирдлагад илгээх санал, хүсэлт, талархал.</p>
+                </div>
+
+                <!-- Form to Write Feedback -->
+                <div class="glass-card rounded-3xl p-6 shadow-lg border-2 border-rose-200 space-y-4">
+                    <h3 class="text-base font-black text-slate-800 font-heading flex items-center gap-2">
+                        <i class="fa-solid fa-pen text-rose-500"></i> Санал хүсэлт бичих
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-black text-slate-700 mb-1">Хэнээс (Эцэг эхийн нэр):</label>
+                            <input type="text" x-model="newFeedback.sender" placeholder="Жишээ: Анарын аав Батжаргал..." class="w-full px-4 py-2.5 bg-white border-2 border-rose-100 rounded-xl text-sm font-bold focus:outline-none focus:ring-2 focus:ring-rose-400">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-black text-slate-700 mb-1">Саналын төрөл:</label>
+                            <select x-model="newFeedback.type" class="w-full px-4 py-2.5 bg-white border-2 border-rose-100 rounded-xl text-sm font-bold focus:outline-none focus:ring-2 focus:ring-rose-400 cursor-pointer">
+                                <option value="Талархал">🌟 Талархал</option>
+                                <option value="Санал">💡 Санал</option>
+                                <option value="Хүсэлт">❓ Хүсэлт</option>
+                                <option value="Асуулт">❔ Асуулт</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black text-slate-700 mb-1">Санал хүсэлтийн агуулга:</label>
+                        <textarea x-model="newFeedback.content" rows="3" placeholder="Сэтгэгдэл, санал хүсэлтээ энд бичнэ үү..." class="w-full px-4 py-2.5 bg-white border-2 border-rose-100 rounded-xl text-sm font-bold focus:outline-none focus:ring-2 focus:ring-rose-400"></textarea>
+                    </div>
+                    <div class="flex justify-end">
+                        <button @click="submitFeedback()" class="bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-black px-6 py-3 rounded-2xl shadow-xl hover:scale-105 transition text-sm flex items-center gap-2 cursor-pointer border-2 border-white">
+                            <i class="fa-solid fa-paper-plane"></i> Илгээх
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Feedbacks List -->
+                <div class="space-y-4">
+                    <h3 class="text-xs font-black text-slate-500 uppercase tracking-wider px-2">Ирүүлсэн санал хүсэлтүүд (<span x-text="feedbacks.length"></span>)</h3>
+                    <template x-for="item in feedbacks" :key="item.id">
+                        <div class="glass-card rounded-3xl p-5 shadow-md border-2 border-rose-100 space-y-3 relative">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-10 h-10 rounded-2xl bg-gradient-to-br from-rose-400 to-pink-500 text-white font-black flex items-center justify-center text-sm shadow-md" x-text="item.sender[0]"></span>
+                                    <div>
+                                        <h4 class="text-sm font-black text-slate-800" x-text="item.sender"></h4>
+                                        <span class="text-xs text-slate-500 font-semibold" x-text="item.date"></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <span :class="item.type === 'Талархал' ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-rose-100 text-rose-800 border-rose-300'" class="text-xs font-black px-3 py-1 rounded-full border" x-text="item.type"></span>
+                                    <template x-if="currentRole === 'teacher'">
+                                        <button @click="deleteFeedback(item.id)" class="bg-rose-100 hover:bg-rose-200 text-rose-700 p-2 rounded-xl transition" title="Багш устгах">
+                                            <i class="fa-solid fa-trash-can text-xs"></i>
+                                        </button>
+                                    </template>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-800 leading-relaxed font-bold bg-white/70 p-3.5 rounded-2xl border border-slate-100" x-text="item.content"></p>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+            <!-- TAB 6: DEPLOYMENT GUIDE -->
+            <div x-show="activeTab === 'deploy_guide'" x-transition class="space-y-6">
+                <div class="bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 rounded-3xl p-6 text-white shadow-xl border-4 border-amber-300 relative overflow-hidden">
+                    <div class="absolute -right-4 -bottom-4 text-white/10 text-8xl">🚀</div>
+                    <h2 class="text-2xl font-black font-heading flex items-center gap-3">
+                        <i class="fa-solid fa-cloud-arrow-up text-amber-300"></i> Supabase & Vercel Байршуулах Иж Бүрэн Заавар
+                    </h2>
+                    <p class="text-xs sm:text-sm text-blue-200 mt-2 font-semibold">
+                        Нийслэлийн хүүхдийн 33 дугаар цэцэрлэгийн Дунд Б бүлгийн системийг бодит датабаазтай холбож, онлайнд 100% үнэгүй байршуулан эцэг эхчүүдэд холбоосоор түгээх алхамчилсан гарын авлага.
+                    </p>
+                </div>
+
+                <!-- Steps Container -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <!-- Step 1: GitHub -->
+                    <div class="glass-card rounded-3xl p-6 shadow-lg border-2 border-slate-200 space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-10 h-10 rounded-2xl bg-slate-900 text-white font-black flex items-center justify-center text-lg shadow-md">1</span>
+                            <h3 class="text-base font-black text-slate-800 font-heading">GitHub дээр Код Бэлдэх</h3>
+                        </div>
+                        <ul class="text-xs text-slate-700 font-semibold space-y-2 list-disc list-inside">
+                            <li><a href="https://github.com" target="_blank" class="text-blue-600 underline font-bold">GitHub.com</a> рүү ороод шинэ Repository (жишээ нь: <code class="bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700">dund-b-kindergarten</code>) үүсгэнэ.</li>
+                            <li>Энэхүү <code class="bg-slate-100 px-1.5 py-0.5 rounded text-indigo-700">index.html</code> файлыг сан руугаа <code class="bg-slate-100 px-1.5 py-0.5 rounded">git push</code> хийж эсвэл шууд Upload хийж хадгална.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Step 2: Supabase -->
+                    <div class="glass-card rounded-3xl p-6 shadow-lg border-2 border-emerald-200 space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-10 h-10 rounded-2xl bg-emerald-600 text-white font-black flex items-center justify-center text-lg shadow-md">2</span>
+                            <h3 class="text-base font-black text-slate-800 font-heading">Supabase Датабааз Үүсгэх</h3>
+                        </div>
+                        <ul class="text-xs text-slate-700 font-semibold space-y-2 list-disc list-inside">
+                            <li><a href="https://supabase.com" target="_blank" class="text-emerald-600 underline font-bold">Supabase.com</a> сайт дээр үнэгүй бүртгүүлж "New Project" дарна.</li>
+                            <li>Төслийн нэрээ <code class="bg-slate-100 px-1.5 py-0.5 rounded">33-kindergarten-dund-b</code> гэж өгөөд Нууц үг зохион үүсгэнэ.</li>
+                            <li>Зүүн цэсний <strong>SQL Editor</strong> хэсэг рүү орно.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Step 3: SQL Script -->
+                <div class="glass-card rounded-3xl p-6 shadow-lg border-2 border-amber-300 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-10 h-10 rounded-2xl bg-amber-500 text-white font-black flex items-center justify-center text-lg shadow-md">3</span>
+                            <div>
+                                <h3 class="text-base font-black text-slate-800 font-heading">Supabase SQL Скрипт Ажиллуулах</h3>
+                                <p class="text-xs text-slate-500 font-bold">Доорх SQL кодыг хуулж аваад Supabase SQL Editor дээр Run хийж хүснэгтүүдийг үүсгэнэ.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 text-emerald-400 p-4 rounded-2xl font-mono text-xs overflow-x-auto border border-slate-800 shadow-inner leading-relaxed">
+                        <pre><code>-- 1. Хүүхдүүдийн хүснэгт
+CREATE TABLE children (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    last_name TEXT NOT NULL,
+    first_name TEXT NOT NULL,
+    age INT NOT NULL,
+    gender TEXT NOT NULL,
+    reg_number TEXT UNIQUE NOT NULL,
+    parent_name TEXT NOT NULL,
+    parent_phone TEXT NOT NULL,
+    note TEXT,
+    photo_url TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 2. Өдөр тутмын ажиглалтын хүснэгт
+CREATE TABLE daily_observations (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    child_id UUID REFERENCES children(id) ON DELETE CASCADE,
+    subject TEXT NOT NULL,
+    content TEXT NOT NULL,
+    media_url TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 3. Ярилцлагын тэмдэглэлийн хүснэгт
+CREATE TABLE interview_notes (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    question TEXT NOT NULL,
+    response TEXT NOT NULL,
+    media_url TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 4. Мэдээ мэдээллийн хүснэгт
+CREATE TABLE news_feed (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    title TEXT NOT NULL,
+    category TEXT NOT NULL,
+    content TEXT NOT NULL,
+    image_url TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 5. Эцэг эхийн санал хүсэлтийн хүснэгт
+CREATE TABLE parent_feedbacks (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    sender TEXT NOT NULL,
+    type TEXT NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);</code></pre>
+                    </div>
+                </div>
+
+                <!-- Steps 4 & 5: Vercel & Share -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <!-- Step 4: Vercel -->
+                    <div class="glass-card rounded-3xl p-6 shadow-lg border-2 border-indigo-200 space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-10 h-10 rounded-2xl bg-indigo-600 text-white font-black flex items-center justify-center text-lg shadow-md">4</span>
+                            <h3 class="text-base font-black text-slate-800 font-heading">Vercel дээр Байршуулах</h3>
+                        </div>
+                        <ul class="text-xs text-slate-700 font-semibold space-y-2 list-disc list-inside">
+                            <li><a href="https://vercel.com" target="_blank" class="text-indigo-600 underline font-bold">Vercel.com</a> руу GitHub хаягаараа нэвтрэн орно.</li>
+                            <li><strong>"Add New Project"</strong> сонгоод 1-р алхамд үүсгэсэн GitHub репозиторигоо импортолж оруулна.</li>
+                            <li><strong>Deploy</strong> товчийг дарснаар 1-2 минутын дотор систем интернетэд бэлэн болно.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Step 5: Distribution -->
+                    <div class="glass-card rounded-3xl p-6 shadow-lg border-2 border-pink-200 space-y-3">
+                        <div class="flex items-center space-x-3">
+                            <span class="w-10 h-10 rounded-2xl bg-pink-500 text-white font-black flex items-center justify-center text-lg shadow-md">5</span>
+                            <h3 class="text-base font-black text-slate-800 font-heading">Эцэг Эхчүүдэд Түгээх</h3>
+                        </div>
+                        <p class="text-xs text-slate-700 font-bold leading-relaxed">
+                            Vercel-ээс гаргаж өгсөн бэлэн холбоосыг (жишээ нь: <code class="bg-pink-50 text-pink-700 border border-pink-200 px-2 py-0.5 rounded">https://33-dund-b.vercel.app</code>) авч ангийн чат эсвэл фэйсбүүк группийн эцэг эхчүүдэд илгээнэ.
+                        </p>
+                        <div class="p-3 bg-amber-50 rounded-2xl border border-amber-200 text-xs font-bold text-amber-900 flex items-center gap-2">
+                            <i class="fa-solid fa-shield-halved text-amber-600 text-base"></i>
+                            <span>Эцэг эхчүүд шууд мэдээлэл үзэх ба санал илгээх бөгөөд багш нууц үгээрээ нэвтэрч удирдна.</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="glass-card rounded-3xl p-6 shadow-md border-2 border-blue-200 text-center space-y-2">
+                    <h3 class="text-lg font-black text-slate-800 font-heading">🎉 Систем Бэлэн Билээ!</h3>
+                    <p class="text-xs text-slate-600 font-bold">Нийслэлийн хүүхдийн 33 дугаар цэцэрлэгийн Дунд Б бүлгийн багш Ц.Золзаяа болон эцэг эхчүүдэд амжилт хүсье.</p>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- MODAL: TEACHER PASSWORD VERIFICATION -->
+    <div x-show="showPasswordModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4" x-cloak x-transition>
+        <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4 border-4 border-amber-400 relative animate-float">
+            <div class="text-center space-y-2">
+                <div class="w-16 h-16 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center mx-auto text-3xl shadow-inner border-2 border-amber-300">
+                    👩‍🏫
+                </div>
+                <h3 class="text-xl font-black text-slate-800 font-heading">Багш Ц.Золзаяа нэвтрэх</h3>
+                <p class="text-xs text-slate-600 font-bold">Систем удирдах нууц үгийг оруулна уу.</p>
+            </div>
+
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-black text-slate-700 mb-1 text-center">Нууц үг оруулна уу:</label>
+                    <input type="password" x-model="inputPassword" @keydown.enter="verifyTeacherPassword()" placeholder="Нууц үг..." class="w-full px-4 py-3 bg-slate-50 border-2 border-amber-300 rounded-xl text-center text-xl font-black tracking-widest focus:outline-none focus:ring-2 focus:ring-amber-500">
+                </div>
+
+                <template x-if="passwordError">
+                    <p class="text-xs font-black text-rose-600 text-center flex items-center justify-center gap-1">
+                        <i class="fa-solid fa-circle-exclamation"></i> Нууц үг буруу байна!
+                    </p>
+                </template>
+            </div>
+
+            <div class="flex gap-2 pt-2">
+                <button @click="cancelTeacherAuth()" class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-black transition">
+                    Цуцлах
+                </button>
+                <button @click="verifyTeacherPassword()" class="flex-1 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl text-xs font-black shadow-lg transition">
+                    Нэвтрэх
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD / EDIT CHILD -->
+    <div x-show="showChildModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4" x-cloak>
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto border-4 border-blue-400">
+            <div class="flex items-center justify-between border-b pb-3">
+                <h3 class="text-lg font-black text-slate-800 font-heading" x-text="editingChild ? 'Хүүхдийн мэдээлэл засах' : 'Шинэ хүүхэд бүртгэх'"></h3>
+                <button @click="showChildModal = false" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            
+            <div class="space-y-3 text-xs font-bold">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-slate-700 block mb-1">Овог:</label>
+                        <input type="text" x-model="childForm.lastName" class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none">
+                    </div>
+                    <div>
+                        <label class="text-slate-700 block mb-1">Нэр:</label>
+                        <input type="text" x-model="childForm.firstName" class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-3">
+                    <div>
+                        <label class="text-slate-700 block mb-1">Нас:</label>
+                        <input type="number" x-model="childForm.age" class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none">
+                    </div>
+                    <div>
+                        <label class="text-slate-700 block mb-1">Хүйс:</label>
+                        <select x-model="childForm.gender" class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none cursor-pointer">
+                            <option value="Эрэгтэй">Эрэгтэй</option>
+                            <option value="Эмэгтэй">Эмэгтэй</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-slate-700 block mb-1">Регистр:</label>
+                        <input type="text" x-model="childForm.regNumber" placeholder="УА222..." class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-slate-700 block mb-1">Эцэг эхийн нэр:</label>
+                        <input type="text" x-model="childForm.parentName" placeholder="Б.Батжаргал (Аав)" class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none">
+                    </div>
+                    <div>
+                        <label class="text-slate-700 block mb-1">Холбоо барих утас:</label>
+                        <input type="text" x-model="childForm.parentPhone" placeholder="9911..." class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-slate-700 block mb-1">Зураг (URL):</label>
+                    <input type="text" x-model="childForm.photo" placeholder="https://..." class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none">
+                </div>
+
+                <div>
+                    <label class="text-slate-700 block mb-1">Тусгай ажиглалт/Тэмдэглэл:</label>
+                    <textarea x-model="childForm.note" rows="2" placeholder="Харшилтай, дуртай зүйл гэх мэт..." class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-400 outline-none"></textarea>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2">
+                <button @click="showChildModal = false" class="px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl text-xs font-black">Цуцлах</button>
+                <button @click="saveChild()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-black shadow-md">Хадгалах</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD DAILY OBSERVATION WITH MEDIA -->
+    <div x-show="showDailyModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4" x-cloak>
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto border-4 border-emerald-400">
+            <div class="flex items-center justify-between border-b pb-3">
+                <h3 class="text-lg font-black text-slate-800 font-heading">Өдөр тутмын ажиглалт нэмэх</h3>
+                <button @click="showDailyModal = false" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+
+            <div class="space-y-3 text-xs font-bold">
+                <div>
+                    <label class="text-slate-700 block mb-1">Холбогдох сурагч:</label>
+                    <select x-model="dailyForm.childId" class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-400 outline-none cursor-pointer">
+                        <option value="all">🌈 Бүх ангийн хүүхдүүд</option>
+                        <template x-for="c in children" :key="c.id">
+                            <option :value="c.id" x-text="c.lastName + ' ' + c.firstName"></option>
+                        </template>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-slate-700 block mb-1">Хичээл / Ажилбарын нэр:</label>
+                    <input type="text" x-model="dailyForm.subject" placeholder="Жишээ: Гар урлал, баримлын хичээл..." class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-400 outline-none">
+                </div>
+
+                <div>
+                    <label class="text-slate-700 block mb-1">Ажиглалтын агуулга:</label>
+                    <textarea x-model="dailyForm.content" rows="4" placeholder="Хүүхдийн оролцоо, идэвхийг бичнэ үү..." class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-400 outline-none"></textarea>
+                </div>
+
+                <div>
+                    <label class="text-slate-700 block mb-1">Зураг хавсаргах (URL):</label>
+                    <input type="text" x-model="mediaInputUrl" placeholder="https://images.unsplash.com/..." class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-emerald-400 outline-none">
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2">
+                <button @click="showDailyModal = false" class="px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl text-xs font-black">Цуцлах</button>
+                <button @click="saveDailyLog()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black shadow-md">Нийтлэх</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD INTERVIEW -->
+    <div x-show="showInterviewModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4" x-cloak>
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto border-4 border-amber-400">
+            <div class="flex items-center justify-between border-b pb-3">
+                <h3 class="text-lg font-black text-slate-800 font-heading">Ярилцлагын тэмдэглэл нэмэх</h3>
+                <button @click="showInterviewModal = false" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+
+            <div class="space-y-3 text-xs font-bold">
+                <div>
+                    <label class="text-slate-700 block mb-1">Ярилцлагын сэдэв / Асуулт:</label>
+                    <input type="text" x-model="interviewForm.question" placeholder="Жишээ: Хүүхдийн ирээдүйн хүсэл мөрөөдөл..." class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-400 outline-none">
+                </div>
+
+                <div>
+                    <label class="text-slate-700 block mb-1">Ярилцлагын дэлгэрэнгүй & Хариулт:</label>
+                    <textarea x-model="interviewForm.response" rows="4" placeholder="Ярилцлагын агуулга..." class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-400 outline-none"></textarea>
+                </div>
+
+                <div>
+                    <label class="text-slate-700 block mb-1">Зураг / Бичлэгийн хавсралт (URL):</label>
+                    <input type="text" x-model="interviewMediaUrl" placeholder="https://..." class="w-full p-2.5 bg-slate-50 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-400 outline-none">
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-2 pt-2">
+                <button @click="showInterviewModal = false" class="px-4 py-2.5 bg-slate-100 text-slate-700 rounded-xl text-xs font-black">Цуцлах</button>
+                <button @click="saveInterview()" class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-black shadow-md">Хадгалах</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox Media Preview -->
+    <div x-show="previewModal.open" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-50 flex items-center justify-center p-4" x-cloak>
+        <div class="relative max-w-4xl w-full bg-slate-900 rounded-3xl overflow-hidden shadow-2xl flex flex-col items-center border-2 border-slate-700">
+            <button @click="previewModal.open = false" class="absolute top-4 right-4 text-white bg-slate-800 hover:bg-slate-700 p-2.5 rounded-full z-10 shadow-lg">
+                <i class="fa-solid fa-xmark text-2xl"></i>
+            </button>
+            <div class="p-4 w-full flex justify-center items-center min-h-[350px]">
+                <template x-if="previewModal.file?.type === 'image'">
+                    <img :src="previewModal.file?.url" class="max-h-[80vh] w-auto object-contain rounded-2xl shadow-xl">
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div x-show="toast.show" x-transition class="fixed bottom-6 right-6 bg-slate-900 text-white px-6 py-3.5 rounded-2xl shadow-2xl z-50 flex items-center space-x-3 text-sm font-black border-2 border-amber-400" x-cloak>
+        <i class="fa-solid fa-circle-check text-emerald-400 text-xl"></i>
+        <span x-text="toast.message"></span>
+    </div>
+
+    <script>
+        function kindergartenApp() {
+            return {
+                activeTab: 'children',
+                currentRole: 'parent',
+                previousRole: 'parent',
+                
+                // Security Password Verification
+                showPasswordModal: false,
+                inputPassword: '',
+                passwordError: false,
+
+                // Toast Notification
+                toast: { show: false, message: '' },
+                showToast(msg) {
+                    this.toast.message = msg;
+                    this.toast.show = true;
+                    setTimeout(() => { this.toast.show = false; }, 3000);
+                },
+
+                handleRoleChange(newRole) {
+                    if (newRole === 'teacher') {
+                        this.inputPassword = '';
+                        this.passwordError = false;
+                        this.showPasswordModal = true;
+                    } else {
+                        this.currentRole = newRole;
+                        this.previousRole = newRole;
+                        this.showToast('Горим шинэчлэгдлээ: ' + this.getRoleName(newRole));
+                    }
+                },
+
+                verifyTeacherPassword() {
+                    if (this.inputPassword === '1993') {
+                        this.currentRole = 'teacher';
+                        this.previousRole = 'teacher';
+                        this.showPasswordModal = false;
+                        this.passwordError = false;
+                        this.showToast('Багш Ц.Золзаяа амжилттай нэвтэрлээ!');
+                    } else {
+                        this.passwordError = true;
+                    }
+                },
+
+                cancelTeacherAuth() {
+                    this.showPasswordModal = false;
+                    this.currentRole = this.previousRole;
+                },
+
+                getRoleName(role) {
+                    if (role === 'teacher') return '👩‍🏫 Багш Ц.Золзаяа';
+                    if (role === 'parent') return '👨‍👩‍👧 Эцэг эхийн горим';
+                    return '🏫 Анги Удирдлага';
+                },
+
+                // 1. Children List Data
+                childSearch: '',
+                genderFilter: 'all',
+                showChildModal: false,
+                editingChild: null,
+                childForm: { id: null, lastName: '', firstName: '', age: 4, gender: 'Эрэгтэй', regNumber: '', parentName: '', parentPhone: '', note: '', photo: '' },
+                children: [
+                    {
+                        id: 'c1',
+                        lastName: 'Батжаргал',
+                        firstName: 'Анар',
+                        age: 4,
+                        gender: 'Эрэгтэй',
+                        regNumber: 'УА22241209',
+                        parentName: 'Б.Батжаргал (Аав)',
+                        parentPhone: '99112233',
+                        note: 'Сүүний харшилтай',
+                        photo: 'https://images.unsplash.com/photo-1543332164-6e82f355badc?w=300&auto=format&fit=crop&q=60'
+                    },
+                    {
+                        id: 'c2',
+                        lastName: 'Ганболд',
+                        firstName: 'Сарнай',
+                        age: 4,
+                        gender: 'Эмэгтэй',
+                        regNumber: 'УА22250311',
+                        parentName: 'Д.Цэцэгмаа (Ээж)',
+                        parentPhone: '88009988',
+                        note: 'Зураг зурах дуртай',
+                        photo: 'https://images.unsplash.com/photo-1595454810013-49251f30e849?w=300&auto=format&fit=crop&q=60'
+                    },
+                    {
+                        id: 'c3',
+                        lastName: 'Төмөрбаатар',
+                        firstName: 'Тэмүүжин',
+                        age: 4,
+                        gender: 'Эрэгтэй',
+                        regNumber: 'УА22211005',
+                        parentName: 'Б.Төмөрбаатар (Аав)',
+                        parentPhone: '91910011',
+                        note: 'Үдээс хойш сайн унтдаг',
+                        photo: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=300&auto=format&fit=crop&q=60'
+                    }
+                ],
+
+                getGenderStats() {
+                    const male = this.children.filter(c => c.gender === 'Эрэгтэй').length;
+                    const female = this.children.filter(c => c.gender === 'Эмэгтэй').length;
+                    return `${female} охин / ${male} хүү`;
+                },
+
+                get filteredChildren() {
+                    return this.children.filter(c => {
+                        const matchesSearch = (c.lastName + ' ' + c.firstName + c.regNumber + c.parentPhone).toLowerCase().includes(this.childSearch.toLowerCase());
+                        const matchesGender = this.genderFilter === 'all' || c.gender === this.genderFilter;
+                        return matchesSearch && matchesGender;
+                    });
+                },
+
+                getChildNameById(id) {
+                    if (id === 'all') return 'Бүх сурагчид';
+                    const c = this.children.find(x => x.id === id);
+                    return c ? (c.lastName + ' ' + c.firstName) : 'Тодорхойгүй';
+                },
+
+                openChildModal(child = null) {
+                    if (child) {
+                        this.editingChild = child;
+                        this.childForm = { ...child };
+                    } else {
+                        this.editingChild = null;
+                        this.childForm = { id: null, lastName: '', firstName: '', age: 4, gender: 'Эрэгтэй', regNumber: '', parentName: '', parentPhone: '', note: '', photo: '' };
+                    }
+                    this.showChildModal = true;
+                },
+
+                saveChild() {
+                    if (!this.childForm.firstName || !this.childForm.lastName) {
+                        this.showToast('Хүүхдийн нэр болон овгийг бөглөнө үү');
+                        return;
+                    }
+                    if (this.editingChild) {
+                        const index = this.children.findIndex(x => x.id === this.editingChild.id);
+                        if (index !== -1) this.children[index] = { ...this.childForm };
+                        this.showToast('Хүүхдийн мэдээлэл шинэчлэгдлээ');
+                    } else {
+                        const newChild = { ...this.childForm, id: 'c_' + Date.now() };
+                        this.children.push(newChild);
+                        this.showToast('Шинэ хүүхэд нэмэгдлээ');
+                    }
+                    this.showChildModal = false;
+                },
+
+                confirmDeleteChild(child) {
+                    if (this.currentRole !== 'teacher') return;
+                    this.children = this.children.filter(x => x.id !== child.id);
+                    this.showToast(child.firstName + ' хүүхдийн бүртгэлийг устгалаа');
+                },
+
+                // 2. Daily Observation Logs
+                showDailyModal: false,
+                mediaInputUrl: '',
+                dailyForm: { childId: 'all', subject: '', content: '', attachments: [] },
+                dailyLogs: [
+                    {
+                        id: 'd1',
+                        date: '2026-08-28',
+                        subject: 'Өнөөдрийн баримлаар бүтээл хийх хичээл',
+                        content: 'Багш Ц.Золзаяа: Анар болон Сарнай хоёр баримлын шавраар маш хөөрхөн гэр бүлийн баримал хийлээ. Гарын жижиг булчин хөгжүүлэх дасгалд идэвхтэй оролцлоо.',
+                        childId: 'all',
+                        attachments: [
+                            { type: 'image', url: 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?w=600&auto=format&fit=crop&q=60' }
+                        ]
+                    }
+                ],
+
+                openDailyModal() {
+                    this.mediaInputUrl = '';
+                    this.dailyForm = { childId: 'all', subject: '', content: '', attachments: [] };
+                    this.showDailyModal = true;
+                },
+
+                saveDailyLog() {
+                    if (!this.dailyForm.subject || !this.dailyForm.content) {
+                        this.showToast('Хичээлийн нэр болон агуулгыг бичнэ үү');
+                        return;
+                    }
+                    const attachments = [];
+                    if (this.mediaInputUrl.trim()) {
+                        attachments.push({ type: 'image', url: this.mediaInputUrl.trim() });
+                    }
+                    const newLog = {
+                        id: 'dl_' + Date.now(),
+                        date: new Date().toISOString().split('T')[0],
+                        ...this.dailyForm,
+                        attachments: attachments.length > 0 ? attachments : [
+                            { type: 'image', url: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600&auto=format&fit=crop&q=60' }
+                        ]
+                    };
+                    this.dailyLogs.unshift(newLog);
+                    this.showDailyModal = false;
+                    this.showToast('Ажиглалтын тэмдэглэл нэмэгдлээ');
+                },
+
+                deleteDailyLog(id) {
+                    this.dailyLogs = this.dailyLogs.filter(x => x.id !== id);
+                    this.showToast('Ажиглалтын тэмдэглэл устгагдлаа');
+                },
+
+                // 3. Interview Logs
+                showInterviewModal: false,
+                interviewMediaUrl: '',
+                interviewForm: { question: '', response: '', attachments: [] },
+                interviewLogs: [
+                    {
+                        id: 'i1',
+                        date: '2026-08-25',
+                        question: 'Ирээдүйд ямар мэргэжилтэй болох вэ?',
+                        response: 'Багш Ц.Золзаяа: Анар "Би сансрын нисгэгч болно", Сарнай "Би эмч болоод хүүхдүүдийг эдгээнэ" гэж хариулсан.',
+                        attachments: [
+                            { type: 'image', url: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600&auto=format&fit=crop&q=60' }
+                        ]
+                    }
+                ],
+
+                openInterviewModal() {
+                    this.interviewMediaUrl = '';
+                    this.interviewForm = { question: '', response: '', attachments: [] };
+                    this.showInterviewModal = true;
+                },
+
+                saveInterview() {
+                    if (!this.interviewForm.question || !this.interviewForm.response) {
+                        this.showToast('Асуулт болон хариултыг бичнэ үү');
+                        return;
+                    }
+                    const attachments = [];
+                    if (this.interviewMediaUrl.trim()) {
+                        attachments.push({ type: 'image', url: this.interviewMediaUrl.trim() });
+                    }
+                    const newInterview = {
+                        id: 'in_' + Date.now(),
+                        date: new Date().toISOString().split('T')[0],
+                        question: this.interviewForm.question,
+                        response: this.interviewForm.response,
+                        attachments: attachments
+                    };
+                    this.interviewLogs.unshift(newInterview);
+                    this.showInterviewModal = false;
+                    this.showToast('Ярилцлагын тэмдэглэл хадгалагдлаа');
+                },
+
+                deleteInterview(id) {
+                    this.interviewLogs = this.interviewLogs.filter(x => x.id !== id);
+                    this.showToast('Ярилцлага устгагдлаа');
+                },
+
+                // 4. News Feed
+                newsFeed: [
+                    {
+                        id: 'n1',
+                        title: 'Нийслэлийн хүүхдийн 33 дугаар цэцэрлэг - Эцэг эхийн хурал',
+                        category: 'Зарлал',
+                        date: '2026-08-27',
+                        content: 'Ирэх Баасан гарагт 17:30 цагаас Дунд Б бүлгийн эцэг эхийн хуралтай тул эцэг эхчүүд цагтаа ирнэ үү. Хурлыг бүлгийн багш Ц.Золзаяа удирдана.',
+                        image: 'https://images.unsplash.com/photo-1526721940322-105d9d41c467?w=600&auto=format&fit=crop&q=60'
+                    }
+                ],
+
+                deleteNews(id) {
+                    this.newsFeed = this.newsFeed.filter(x => x.id !== id);
+                    this.showToast('Мэдээ устгагдлаа');
+                },
+
+                // 5. Parent Feedbacks
+                newFeedback: { sender: '', type: 'Талархал', content: '' },
+                feedbacks: [
+                    {
+                        id: 'f1',
+                        sender: 'Анарын аав Батжаргал',
+                        type: 'Талархал',
+                        date: '2026-08-26',
+                        content: 'Золзаяа багшдаа болон 33-р цэцэрлэгийн хамт олонд маш их баярлалаа. Хүү маань цэцэрлэгтээ явах их дуртай болсон.'
+                    }
+                ],
+
+                submitFeedback() {
+                    if (!this.newFeedback.sender || !this.newFeedback.content) {
+                        this.showToast('Нэр болон санал хүсэлтийн агуулгыг бичнэ үү');
+                        return;
+                    }
+                    const feedbackItem = {
+                        id: 'fb_' + Date.now(),
+                        sender: this.newFeedback.sender,
+                        type: this.newFeedback.type,
+                        date: new Date().toISOString().split('T')[0],
+                        content: this.newFeedback.content
+                    };
+                    this.feedbacks.unshift(feedbackItem);
+                    this.newFeedback.content = '';
+                    this.showToast('Санал хүсэлт амжилттай илгээгдлээ');
+                },
+
+                deleteFeedback(id) {
+                    if (this.currentRole !== 'teacher') return;
+                    this.feedbacks = this.feedbacks.filter(x => x.id !== id);
+                    this.showToast('Санал хүсэлтийг устгалаа');
+                },
+
+                // Lightbox Preview
+                previewModal: { open: false, file: null },
+                previewMedia(file) {
+                    this.previewModal.file = file;
+                    this.previewModal.open = true;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
